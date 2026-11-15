@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rapport de stage — Anecdote</title>
+  <link rel="stylesheet" href="RapportStage1_Style.css">
+</head>
+<body>
+<audio id="bg-music" src="BackgroundOffice.mp3" loop preload="auto"></audio>
+<audio id="dynamic-case-audio" preload="auto"></audio>
+
+  <!-- ÉTAPE 1 : Vidéo plein écran + Titre/Bouton de fin -->
+  <section class="hero" id="hero">
+    <video id="intro-video" src="Anim_Debut.mp4" muted autoplay  playsinline></video>
+    
+    <div class="hero-overlay" id="hero-overlay">
+      <h1 id="maint-title">Les moments goûters</h1>
+      <button id="btn-raconte">Raconte !</button>
+    </div>
+  </section>
+
+  <!-- ÉTAPE 2 : Les 5 cases de la BD -->
+  <main class="bd-container" id="bd-container">
+    <div class="case-bd reveal">
+      <video src="Case1.mp4" autoplay loop muted playsinline> </video>
+      <p> C'était une longue après-midi et Annelise et moi étions parties chercher de quoi boire</p>
+    </div>
+    <div class="case-bd reveal">
+      <video src="Case2.mp4" autoplay loop muted playsinline> </video>
+      <p>Bref rien de très spécial</p>
+    </div>
+    <div class="case-bd reveal custom-border case-large" data-case-audio="Pshit.wav" >
+      <img src="transparent-gif.gif" autoplay loop muted playsinline> </img>
+      <p>Quoique...</p>
+    </div>
+    <div class="case-bd reveal">
+      <video src="Case4.mp4" autoplay loop muted playsinline> </video>
+    </div>
+    <div class="case-bd reveal">
+      <video src="Case5.mp4" autoplay loop muted playsinline> </video>
+    </div>
+    <div class="case-bd reveal">
+      <video src="Case6.mp4" autoplay loop muted playsinline> </video>
+    </div>
+    <div class="case-bd reveal">
+      <video src="Case7.mp4" autoplay loop muted playsinline> </video>
+      <p>"Bon je vais chercher de quoi nettoyer."</p>
+    </div>
+    <div class="case-bd reveal">
+      <video src="Case8.mp4" autoplay loop muted playsinline> </video>
+      <p>"Oui s'il te plait..."</p>
+    </div>
+
+    <!-- Bouton de fin de scroll -->
+    <div class="end-section">
+      <button id="btn-pause" class="btn-pause-style">
+        Vous faisez des goûters?
+      </button>
+    </div>
+
+    <!-- Nouvel écran plein écran avec le texte seul au centre -->
+    <div id="final-screen" class="final-screen">
+      <p>
+        Les goûters c'était le moyen de faire une petite pause en plus dans la journée. On allait régulièrement au Franprix rue de la Motte-Picquet chercher de quoi grignoter et essayer des trucs inédits (comme les chips goût tajine qui n'ont pas fait l'unanimité).
+      </p>
+      <button id="btn-back" class="btn-back-style">← Revenir sur la BD</button>
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

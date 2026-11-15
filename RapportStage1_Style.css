@@ -1,0 +1,326 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+@font-face {
+  font-family: 'yuimessyhand';
+  src: url('GiveYouGlory-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+html {
+  scroll-behavior: smooth;
+  background-color: #ffffff;
+  color: #111827;
+  font-family: 'yuimessyhand', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.hero {
+  position: sticky;
+  top: 0; /* CORRIGÉ : On colle bien tout en haut de l'écran pour fermer le haut */
+  z-index: 50;
+  width: 100%;
+  height: 100vh;
+  height: 100svh;
+  overflow: hidden;
+   background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(255, 255, 255, 0.95) 35%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transition: height 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.hero.started {
+  height: 85px;
+}
+
+#intro-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
+  transition: opacity 0.8s ease;
+}
+
+.hero.started #intro-video {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 3rem 2rem; /* Légèrement élargi */
+  background: rgba(255, 255, 255, 0.85);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.8s ease-in-out, background 0.8s ease;
+}
+
+.hero-overlay.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+
+.hero.started .hero-overlay {
+  /* Blanc pur en haut (sur 45%) puis fondu progressif vers le transparent en bas */
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(255, 255, 255, 0.95) 45%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  padding: 20px 1.5rem 0;
+  justify-content: flex-start; /* Cale le titre en haut dans la zone bien blanche */
+}
+#main-title {
+  font-size: 1.6rem; /* Réduit un poil pour éviter qu'il ne saute sur 2 lignes au début */
+  margin-bottom: 1.2rem;
+  font-weight: 700;
+  color: #111827;
+  white-space: nowrap; /* FORCE LE TITRE SUR UNE SEULE LIGNE */
+  transition: font-size 0.9s ease;
+}
+
+.hero.started #main-title {
+  font-size: 1.1rem; /* Taille idéale pour tenir sur une seule ligne dans la barre de 65px */
+  margin-bottom: 0;
+}
+
+#btn-raconte {
+  background: none;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  font-family: 'yuimessyhand', cursive, sans-serif;
+  font-size: 1.4rem;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  color: #6b7280;
+  cursor: pointer;
+  transition: color 0.3s ease, transform 0.25s ease, opacity 0.4s ease;
+}
+
+#btn-raconte:hover,
+#btn-raconte:focus {
+  color: #d1d5db;
+  transform: translateY(-2px);
+}
+
+#btn-raconte:active {
+  transform: scale(0.96);
+}
+
+.hero.started #btn-raconte {
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+}
+
+.bd-container {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  background-color: #ffffff;
+}
+/* --- CADRES BROUILLON / DESSINÉS À LA MAIN --- */
+.case-bd img,
+.case-bd video {
+  width: 100%;
+  height: auto;
+  display: block;
+  /* Bordure irrégulière façon croquis */
+  border: 2.5px solid #111827;
+  border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
+  box-shadow: 4px 5px 0px rgba(17, 24, 39, 0.12);
+  background-color: #ffffff;
+}
+
+/* Variation de déformation et légère inclinaison selon les cases */
+.case-bd:nth-child(even) img,
+.case-bd:nth-child(even) video {
+  border-radius: 15px 225px 15px 255px / 255px 15px 225px 15px;
+  transform: rotate(0.8deg);
+}
+
+.case-bd:nth-child(odd) img,
+.case-bd:nth-child(odd) video {
+  transform: rotate(-0.8deg);
+}
+
+/* --- EFFET TRANSITION PAINT SUR LA CASE 1 (au clic sur Raconte !) --- */
+.first-case {
+  opacity: 0;
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 40%, transparent 60%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 0%, #000 40%, transparent 60%, transparent 100%);
+  -webkit-mask-size: 100% 300%;
+  mask-size: 100% 300%;
+  -webkit-mask-position: 0% 100%;
+  mask-position: 0% 100%;
+  transition: -webkit-mask-position 1.6s cubic-bezier(0.25, 1, 0.5, 1), mask-position 1.6s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.4s ease;
+}
+
+.first-case.paint-reveal {
+  opacity: 1;
+  -webkit-mask-position: 0% 0%;
+  mask-position: 0% 0%;
+}
+
+/* --- APPARITION ET DESSIN PILOTÉS PAR LE SCROLL (Cases 2 à 5) --- */
+.reveal {
+  /* Variables pilotées en direct par le scroll en JS (--progress va de 0 à 1) */
+  --progress: 0;
+  
+  opacity: calc(0.1 + (var(--progress) * 0.9));
+  transform: translateY(calc((1 - var(--progress)) * 60px));
+  
+  /* Masque pinceau qui descend au rythme du doigt/de la molette */
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 40%, transparent 65%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 0%, #000 40%, transparent 65%, transparent 100%);
+  -webkit-mask-size: 100% 300%;
+  mask-size: 100% 300%;
+  -webkit-mask-position: 0% calc((1 - var(--progress)) * 100%);
+  mask-position: 0% calc((1 - var(--progress)) * 100%);
+  
+  /* Micro-lissage pour éviter les saccades sur mobile */
+  transition: transform 0.08s ease-out, -webkit-mask-position 0.08s ease-out, mask-position 0.08s ease-out;
+}
+.reveal.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.bd-container p {
+    font-size: 25px;
+    padding: 20px;
+}
+/* --- SECTION FINALE INTERACTIVE --- */
+/* --- BOUTON DE FIN --- */
+.end-section {
+  width: 100%;
+  text-align: center;
+  margin: 3rem auto 2rem;
+  display: flex;
+  justify-content: center;
+}
+
+.btn-pause-style {
+  font-family: 'yuimessyhand', cursive, sans-serif;
+  background: #ffffff;
+  border: 2px solid #111827;
+  border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
+  padding: 0.9rem 1.4rem;
+  font-size: 1.25rem;
+  color: #111827;
+  cursor: pointer;
+  box-shadow: 3px 4px 0px rgba(17, 24, 39, 0.15);
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.btn-pause-style:active {
+  transform: scale(0.96);
+}
+
+/* --- NOUVELLE PAGE PLEIN ÉCRAN --- */
+.final-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 100; /* Passe par-dessus le header et toute la BD */
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2.5rem;
+  text-align: center;
+  
+  /* Masqué par défaut */
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.6s ease-in-out;
+}
+
+.final-screen.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.final-screen p {
+  font-family: 'yuimessyhand', cursive, sans-serif;
+  font-size: 1.45rem;
+  line-height: 1.6;
+  color: #111827;
+  max-width: 420px;
+}
+
+/* Petit bouton discret en bas pour revenir si besoin */
+.btn-back-style {
+  margin-top: 2.5rem;
+  background: none;
+  border: none;
+  font-family: 'yuimessyhand', cursive, sans-serif;
+  font-size: 1.1rem;
+  color: #9ca3af;
+  cursor: pointer;
+}
+
+/* 1. Teinte les images en nuances de bleu (convertit le gris/noir en bleu monochrome) */
+.case-bd img,
+.case-bd video {
+  filter: grayscale(100%) sepia(100%) hue-rotate(200deg) saturate(280%) brightness(0.80);
+}
+
+/* 2. Donne une couleur bleue élégante à tout le texte de la BD et des titres */
+html, body, #main-title, .end-note, .final-screen p, .btn-pause-style {
+  color: #1e3a8a; /* Bleu profond / encre bleue */
+}
+
+/* Ajustement de la bordure des cadres pour qu'elle passe aussi au bleu */
+.case-bd img,
+.case-bd video,
+.btn-pause-style {
+  border-color: #1e3a8a !important;
+}
+
+/* --- ANNULATION DU CADRE AUTOMATIQUE POUR LES CASES SPÉCIALES --- */
+.case-bd.custom-border img,
+.case-bd.custom-border video {
+  background-color: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  transform: none !important; /* Retire aussi l'inclinaison aléatoire si ton contour est déjà droit dans la vidéo */
+}
+/* --- AGRANDISSEMENT DE LA CASE 3 --- */
+.case-bd.case-large {
+  transform: scale(1.15); /* Agrandit la case de 15% */
+  margin: 2rem 0;        /* Ajoute un peu d'espace autour pour qu'elle respire */
+}
+
+.case-bd.case-large img {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  background-color: transparent !important;
+}
